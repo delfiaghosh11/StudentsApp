@@ -71,7 +71,10 @@
     </div>
   </div>
 
-  <table *ngIf="searching === false" class="table table-striped my-5">
+  <table
+    *ngIf="searching === false && isFound === true"
+    class="table table-striped my-5"
+  >
     <thead class="thead-dark">
       <tr>
         <th scope="col">Roll</th>
@@ -213,6 +216,10 @@
       </tr>
     </tbody>
   </table>
+
+  <div *ngIf="searchIsOn === true && isFound === true">
+    <button class="btn btn-outline-success" (click)="back()">Go Back</button>
+  </div>
 
   <div>
     <!-- Modal -->

@@ -224,38 +224,36 @@ export class StudentsComponent implements OnInit {
 
     // this.studentsData = this.service.getStudents();
 
-    // let found;
-    // from(this.studentsData)
-    //   .pipe(find((item) => item.name === this.searchName))
-    //   .subscribe((data) => {
-    //     found = data;
-    //   });
+    let found;
+    from(this.students)
+      .pipe(find((item) => item.name === this.searchName))
+      .subscribe((data) => {
+        found = data;
+      });
 
-    // if (this.searchName === '') {
-    //   this.service.setStudents(this.studentsData);
-    //   this.isFound = true;
-    //   this.searchIsOn = false;
-    // } else if (this.searchName !== '' && found === undefined) {
-    //   this.isFound = false;
-    // } else {
-    //   from(this.studentsData)
-    //     .pipe(
-    //       filter((item) => item.name === this.searchName),
-    //       toArray()
-    //     )
-    //     .subscribe((data) => {
-    //       this.studentsData = data;
-    //     });
+    if (this.searchName === '') {
+      this.isFound = true;
+      this.searchIsOn = false;
+    } else if (this.searchName !== '' && found === undefined) {
+      this.isFound = false;
+    } else {
+      from(this.students)
+        .pipe(
+          filter((item) => item.name === this.searchName),
+          toArray()
+        )
+        .subscribe((data) => {
+          this.students = data;
+        });
 
-    //   this.isFound = true;
-    // }
-    // this.searchName = '';
+      this.isFound = true;
+    }
+    this.searchName = '';
     // console.log(this.service.getStudents());
   }
 
   back() {
-    // this.studentsData = this.service.getStudents();
-    // this.service.setStudents(this.studentsData);
+    this.getStudents();
     this.isFound = true;
     this.searchIsOn = false;
   }
