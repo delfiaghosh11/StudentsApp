@@ -14,6 +14,7 @@ export class CollegesComponent implements OnInit {
   colleges: Colleges[];
   cid: number;
   visible: boolean;
+  searching: boolean;
 
   constructor(
     private service: DataService,
@@ -21,6 +22,7 @@ export class CollegesComponent implements OnInit {
     private location: Location
   ) {
     this.visible = false;
+    this.searching = true;
   }
 
   ngOnInit(): void {
@@ -30,6 +32,7 @@ export class CollegesComponent implements OnInit {
   getColleges() {
     this.service.getColleges().subscribe((data) => {
       this.colleges = data as Colleges[];
+      this.searching = false;
     });
   }
 
