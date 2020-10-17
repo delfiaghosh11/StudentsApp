@@ -1,0 +1,430 @@
+<div class="container">
+  <div>
+    <span class="h3">Students</span>
+    <span>
+      <div class="input-group w-25" style="float: right">
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Student's Name"
+          aria-label="Student's Name"
+          aria-describedby="button-addon2"
+          [(ngModel)]="searchName"
+          (keyup.enter)="search()"
+        />
+        <div class="input-group-append">
+          <button
+            class="btn btn-outline-secondary"
+            type="button"
+            id="button-addon2"
+            (click)="search()"
+          >
+            Search
+          </button>
+        </div>
+      </div>
+    </span>
+    <span>
+      <button
+        class="btn btn-success mr-3"
+        style="float: right"
+        data-toggle="modal"
+        data-target="#exampleModal1"
+        [disabled]="searchIsOn"
+      >
+        <i class="fas fa-plus"></i>&nbsp;Add
+      </button></span
+    >
+    <span>
+      <button
+        class="btn btn-primary text-white mr-3"
+        (click)="goBack()"
+        style="float: right"
+        [disabled]="searchIsOn"
+      >
+        Back
+      </button>
+    </span>
+    <!-- <app-form></app-form> -->
+  </div>
+
+  <div *ngIf="isFound === false" class="text-center mt-5">
+    <div class="my-2">
+      <i
+        class="fas fa-exclamation-triangle text-warning"
+        style="font-size: 60px"
+      ></i>
+    </div>
+    <div class="h5 my-2">
+      <p>No Match Found</p>
+    </div>
+    <div>
+      <button class="btn btn-outline-success" (click)="back()">Go Back</button>
+    </div>
+  </div>
+
+  <div *ngIf="searching === true">
+    <div class="text-center py-5">
+      <div class="spinner-border" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <table *ngIf="searching === false" class="table table-striped my-5">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Roll</th>
+        <th scope="col">Name</th>
+        <th scope="col">City</th>
+        <th scope="col">Gender</th>
+        <th scope="col">Contact</th>
+        <th scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let student of students; let i = index">
+        <th scope="row">
+          <span *ngIf="!editMode[i]">{{ student.roll }}</span>
+          <span *ngIf="editMode[i]"
+            ><input
+              type="number"
+              [(ngModel)]="student.roll"
+              class="form-control"
+              required
+            />
+          </span>
+        </th>
+        <td>
+          <span
+            class="name"
+            *ngIf="!editMode[i]"
+            routerLink="/details/{{ student.sid }}"
+            data-toggle="tooltip"
+            data-placement="top"
+            title="Click to view student's details"
+            >{{ student.name }}</span
+          >
+          <span *ngIf="editMode[i]"
+            ><input
+              type="text"
+              [(ngModel)]="student.name"
+              class="form-control"
+              required
+            />
+          </span>
+        </td>
+        <td>
+          <span *ngIf="!editMode[i]">{{ student.city }}</span>
+          <span *ngIf="editMode[i]"
+            ><input
+              type="text"
+              [(ngModel)]="student.city"
+              class="form-control"
+              required
+            />
+          </span>
+        </td>
+        <td>
+          <span *ngIf="!editMode[i]">
+            <img
+              *ngIf="student.gender === 'female'"
+              src="{{ femaleImgUrl }}"
+              alt="Female Avatar"
+            />
+            <img
+              *ngIf="student.gender === 'male'"
+              src="{{ maleImgUrl }}"
+              alt="Male Avatar"
+            />
+          </span>
+          <span *ngIf="editMode[i]">
+            <div class="form-check">
+              <label class="form-check-label mr-5" for="exampleRadios1">
+                <input
+                  name="gender"
+                  class="form-check-input"
+                  type="radio"
+                  id="female"
+                  value="female"
+                  [(ngModel)]="student.gender"
+                  (change)="setSex($event)"
+                /><i
+                  class="fas fa-female text-success"
+                  style="font-size: 26px"
+                ></i
+                >&nbsp;Female
+              </label>
+              <label class="form-check-label" for="exampleRadios2">
+                <input
+                  name="gender"
+                  class="form-check-input"
+                  type="radio"
+                  id="male"
+                  value="male"
+                  [(ngModel)]="student.gender"
+                  (change)="setSex($event)"
+                /><i
+                  class="fas fa-male text-success"
+                  style="font-size: 26px"
+                ></i
+                >&nbsp;Male
+              </label>
+            </div>
+          </span>
+        </td>
+        <td>
+          <span *ngIf="!editMode[i]">{{ student.contact }}</span>
+          <span *ngIf="editMode[i]"
+            ><input
+              type="text"
+              [(ngModel)]="student.contact"
+              class="form-control"
+              required
+            />
+          </span>
+        </td>
+        <td>
+          <input type="checkbox" [(ngModel)]="student.isCompleted" />
+        </td>
+        <td>
+          <i
+            *ngIf="!editMode[i]"
+            class="fas fa-pen text-warning mr-4"
+            (click)="editRow(student, i)"
+            style="cursor: pointer"
+          ></i>
+          <i
+            *ngIf="editMode[i]"
+            class="fas fa-save text-info mr-4"
+            (click)="saveRow(student, i)"
+            style="cursor: pointer"
+          ></i>
+          <button
+            *ngIf="searchIsOn === false"
+            class="btn btn-sm btn-danger"
+            (click)="delete(i, student)"
+            [disabled]="!student.isCompleted"
+          >
+            Delete
+          </button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="exampleModal1"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel1"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel1">
+              Add Student Details
+            </h5>
+            <button
+              type="button"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <form [formGroup]="form" (ngSubmit)="submit(form)" class="mt-3">
+              <!-- Student Roll -->
+              <div class="form-group">
+                <input
+                  formControlName="studentRoll"
+                  type="number"
+                  name="studentRoll"
+                  id="studentRoll"
+                  class="form-control"
+                  placeholder="Student Roll"
+                />
+                <div *ngIf="studentRoll.touched && studentRoll.invalid">
+                  <div *ngIf="studentRoll.errors.required" class="text-danger">
+                    Please enter the Student Roll.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student Name -->
+              <div class="form-group">
+                <input
+                  formControlName="studentName"
+                  type="text"
+                  name="studentName"
+                  id="studentName"
+                  class="form-control"
+                  placeholder="Student Name"
+                />
+                <div *ngIf="studentName.touched && studentName.invalid">
+                  <div *ngIf="studentName.errors.required" class="text-danger">
+                    Please enter the Student Name.
+                  </div>
+                  <div
+                    *ngIf="
+                      studentName.errors.minlength ||
+                      studentName.errors.maxlength
+                    "
+                    class="text-danger"
+                  >
+                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                  </div>
+                  <div *ngIf="studentName.errors.pattern" class="text-danger">
+                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student City -->
+              <div class="form-group">
+                <input
+                  formControlName="studentCity"
+                  type="text"
+                  name="studentCity"
+                  id="studentCity"
+                  class="form-control"
+                  placeholder="Student's City"
+                />
+                <div *ngIf="studentCity.touched && studentCity.invalid">
+                  <div *ngIf="studentCity.errors.required" class="text-danger">
+                    Please enter the City Name.
+                  </div>
+                  <div *ngIf="studentCity.errors.pattern" class="text-danger">
+                    Invalid City Name
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student Contact -->
+              <div class="form-group">
+                <input
+                  formControlName="studentContact"
+                  type="text"
+                  name="studentContact"
+                  id="studentContact"
+                  class="form-control"
+                  placeholder="Contact"
+                />
+                <div *ngIf="studentContact.touched && studentContact.invalid">
+                  <div
+                    *ngIf="studentContact.errors.required"
+                    class="text-danger"
+                  >
+                    Please enter the Contact.
+                  </div>
+                  <div
+                    *ngIf="
+                      studentContact.errors.minlength ||
+                      studentContact.errors.maxlength
+                    "
+                    class="text-danger"
+                  >
+                    Min 5 to Max 50 Char
+                  </div>
+                </div>
+              </div>
+
+              <!-- Student Degree -->
+              <div class="form-group">
+                <input
+                  formControlName="studentDegree"
+                  type="text"
+                  name="studentDegree"
+                  id="studentDegree"
+                  class="form-control"
+                  placeholder="Student Degree"
+                />
+                <div *ngIf="studentDegree.touched && studentDegree.invalid">
+                  <div
+                    *ngIf="studentDegree.errors.required"
+                    class="text-danger"
+                  >
+                    Please enter the Student Degree.
+                  </div>
+                  <div
+                    *ngIf="
+                      studentDegree.errors.minlength ||
+                      studentDegree.errors.maxlength
+                    "
+                    class="text-danger"
+                  >
+                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                  </div>
+                  <div *ngIf="studentDegree.errors.pattern" class="text-danger">
+                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                  </div>
+                </div>
+              </div>
+
+              <!-- Gender -->
+              <div class="form-group">
+                <div class="form-check">
+                  <label class="form-check-label mr-5" for="exampleRadios1">
+                    <input
+                      name="gender"
+                      class="form-check-input"
+                      type="radio"
+                      id="female"
+                      value="female"
+                      formControlName="gender"
+                      (change)="setGender($event)"
+                    /><i
+                      class="fas fa-female text-warning"
+                      style="font-size: 26px"
+                    ></i
+                    >&nbsp;Female
+                  </label>
+                  <label class="form-check-label" for="exampleRadios2">
+                    <input
+                      name="gender"
+                      class="form-check-input"
+                      type="radio"
+                      id="male"
+                      value="male"
+                      formControlName="gender"
+                      (change)="setGender($event)"
+                    /><i
+                      class="fas fa-male text-warning"
+                      style="font-size: 26px"
+                    ></i
+                    >&nbsp;Male
+                  </label>
+                </div>
+              </div>
+
+              <!-- Json Data -->
+              <!-- <p>
+                  {{ form.value | json }}
+              </p> -->
+
+              <button
+                type="submit"
+                class="btn btn-primary mr-3"
+                [disabled]="form.invalid"
+              >
+                Add Student
+              </button>
+            </form>
+          </div>
+          <!-- <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

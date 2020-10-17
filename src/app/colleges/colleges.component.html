@@ -1,0 +1,35 @@
+<div class="container">
+  <div>
+    <form [formGroup]="form" (ngSubmit)="submit(form)">
+      <div class="form-group">
+        <select
+          formControlName="college"
+          name="college"
+          id="college"
+          class="form-control"
+        >
+          <option value="" selected disabled>Select College</option>
+          <option *ngFor="let college of colleges" [ngValue]="college">
+            {{ college.id }}&nbsp;-&nbsp;{{ college.name }}
+          </option>
+        </select>
+        <div *ngIf="college?.touched && college?.invalid">
+          <div *ngIf="college.errors?.required" class="text-danger">
+            Please select College.
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+        Done
+      </button>
+    </form>
+    <div *ngIf="visible === true">
+      <a
+        class="btn btn-secondary float-right"
+        type="button"
+        routerLink="/departments/{{ cid }}"
+        >Next</a
+      >
+    </div>
+  </div>
+</div>
