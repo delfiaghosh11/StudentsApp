@@ -253,6 +253,7 @@ export class StudentsComponent implements OnInit {
   }
 
   back() {
+    this.searching = true;
     this.getStudents();
     this.isFound = true;
     this.searchIsOn = false;

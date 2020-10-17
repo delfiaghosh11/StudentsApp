@@ -45,7 +45,6 @@ export class StudentDetailsComponent implements OnInit {
       this.getCollege(this.students[0].cid);
       this.getDepartment(this.students[0].did);
       // console.log(this.students);
-      this.searching = false;
     });
   }
 
@@ -54,6 +53,7 @@ export class StudentDetailsComponent implements OnInit {
       this.colleges = data as Colleges[];
       this.college = this.colleges[0];
       // console.log(this.college);
+      this.searching = false;
     });
   }
 
@@ -62,6 +62,7 @@ export class StudentDetailsComponent implements OnInit {
       this.departments = data as Departments[];
       this.department = this.departments[0];
       // console.log(this.department);
+      this.searching = false;
     });
   }
 

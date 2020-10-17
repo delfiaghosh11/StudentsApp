@@ -1,51 +1,54 @@
 <div class="container">
   <div>
-    <span class="h3">Students</span>
-    <span>
-      <div class="input-group w-25" style="float: right">
-        <input
-          type="text"
-          class="form-control"
-          placeholder="Student's Name"
-          aria-label="Student's Name"
-          aria-describedby="button-addon2"
-          [(ngModel)]="searchName"
-          (keyup.enter)="search()"
-        />
-        <div class="input-group-append">
-          <button
-            class="btn btn-outline-secondary"
-            type="button"
-            id="button-addon2"
-            (click)="search()"
-          >
-            Search
-          </button>
+    <div class="row">
+      <div class="col-md-6 my-2">
+        <span class="h3">Students</span>
+      </div>
+      <div class="col-md-6 my-2">
+        <div class="input-group w-auto float-right">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Student's Name"
+            aria-label="Student's Name"
+            aria-describedby="button-addon2"
+            [(ngModel)]="searchName"
+            (keyup.enter)="search()"
+          />
+          <div class="input-group-append">
+            <button
+              class="btn btn-outline-secondary"
+              type="button"
+              id="button-addon2"
+              (click)="search()"
+            >
+              Search
+            </button>
+          </div>
         </div>
       </div>
-    </span>
-    <span>
-      <button
-        class="btn btn-success mr-3"
-        style="float: right"
-        data-toggle="modal"
-        data-target="#exampleModal1"
-        [disabled]="searchIsOn"
-      >
-        <i class="fas fa-plus"></i>&nbsp;Add
-      </button></span
-    >
-    <span>
-      <button
-        class="btn btn-primary text-white mr-3"
-        (click)="goBack()"
-        style="float: right"
-        [disabled]="searchIsOn"
-      >
-        Back
-      </button>
-    </span>
-    <!-- <app-form></app-form> -->
+    </div>
+    <div class="row">
+      <div class="col-md-1 my-2">
+        <button
+          class="btn btn-primary text-white"
+          (click)="goBack()"
+          [disabled]="searchIsOn"
+        >
+          Back
+        </button>
+      </div>
+      <div class="col-md-2 my-2">
+        <button
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#exampleModal1"
+          [disabled]="searchIsOn"
+        >
+          <i class="fas fa-plus"></i>&nbsp;Add
+        </button>
+      </div>
+    </div>
   </div>
 
   <div *ngIf="isFound === false" class="text-center mt-5">
@@ -71,153 +74,152 @@
     </div>
   </div>
 
-  <table
-    *ngIf="searching === false && isFound === true"
-    class="table table-striped my-5"
-  >
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Roll</th>
-        <th scope="col">Name</th>
-        <th scope="col">City</th>
-        <th scope="col">Gender</th>
-        <th scope="col">Contact</th>
-        <th scope="col">Status</th>
-        <th scope="col">Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let student of students; let i = index">
-        <th scope="row">
-          <span *ngIf="!editMode[i]">{{ student.roll }}</span>
-          <span *ngIf="editMode[i]"
-            ><input
-              type="number"
-              [(ngModel)]="student.roll"
-              class="form-control"
-              required
-            />
-          </span>
-        </th>
-        <td>
-          <span
-            class="name"
-            *ngIf="!editMode[i]"
-            routerLink="/details/{{ student.sid }}"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="Click to view student's details"
-            >{{ student.name }}</span
-          >
-          <span *ngIf="editMode[i]"
-            ><input
-              type="text"
-              [(ngModel)]="student.name"
-              class="form-control"
-              required
-            />
-          </span>
-        </td>
-        <td>
-          <span *ngIf="!editMode[i]">{{ student.city }}</span>
-          <span *ngIf="editMode[i]"
-            ><input
-              type="text"
-              [(ngModel)]="student.city"
-              class="form-control"
-              required
-            />
-          </span>
-        </td>
-        <td>
-          <span *ngIf="!editMode[i]">
-            <img
-              *ngIf="student.gender === 'female'"
-              src="{{ femaleImgUrl }}"
-              alt="Female Avatar"
-            />
-            <img
-              *ngIf="student.gender === 'male'"
-              src="{{ maleImgUrl }}"
-              alt="Male Avatar"
-            />
-          </span>
-          <span *ngIf="editMode[i]">
-            <div class="form-check">
-              <label class="form-check-label mr-5" for="exampleRadios1">
-                <input
-                  name="gender"
-                  class="form-check-input"
-                  type="radio"
-                  id="female"
-                  value="female"
-                  [(ngModel)]="student.gender"
-                  (change)="setSex($event)"
-                /><i
-                  class="fas fa-female text-success"
-                  style="font-size: 26px"
-                ></i
-                >&nbsp;Female
-              </label>
-              <label class="form-check-label" for="exampleRadios2">
-                <input
-                  name="gender"
-                  class="form-check-input"
-                  type="radio"
-                  id="male"
-                  value="male"
-                  [(ngModel)]="student.gender"
-                  (change)="setSex($event)"
-                /><i
-                  class="fas fa-male text-success"
-                  style="font-size: 26px"
-                ></i
-                >&nbsp;Male
-              </label>
-            </div>
-          </span>
-        </td>
-        <td>
-          <span *ngIf="!editMode[i]">{{ student.contact }}</span>
-          <span *ngIf="editMode[i]"
-            ><input
-              type="text"
-              [(ngModel)]="student.contact"
-              class="form-control"
-              required
-            />
-          </span>
-        </td>
-        <td>
-          <input type="checkbox" [(ngModel)]="student.isCompleted" />
-        </td>
-        <td>
-          <i
-            *ngIf="!editMode[i]"
-            class="fas fa-pen text-warning mr-4"
-            (click)="editRow(student, i)"
-            style="cursor: pointer"
-          ></i>
-          <i
-            *ngIf="editMode[i]"
-            class="fas fa-save text-info mr-4"
-            (click)="saveRow(student, i)"
-            style="cursor: pointer"
-          ></i>
-          <button
-            *ngIf="searchIsOn === false"
-            class="btn btn-sm btn-danger"
-            (click)="delete(i, student)"
-            [disabled]="!student.isCompleted"
-          >
-            Delete
-          </button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div *ngIf="searching === false && isFound === true" class="table-responsive">
+    <table class="table table-striped mt-3 mb-5">
+      <thead class="thead-dark">
+        <tr>
+          <th scope="col">Roll</th>
+          <th scope="col">Name</th>
+          <th scope="col">City</th>
+          <th scope="col">Gender</th>
+          <th scope="col">Contact</th>
+          <th scope="col">Status</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let student of students; let i = index">
+          <th scope="row">
+            <span *ngIf="!editMode[i]">{{ student.roll }}</span>
+            <span *ngIf="editMode[i]"
+              ><input
+                type="number"
+                [(ngModel)]="student.roll"
+                class="form-control"
+                required
+              />
+            </span>
+          </th>
+          <td>
+            <span
+              class="name h6"
+              *ngIf="!editMode[i]"
+              routerLink="/details/{{ student.sid }}"
+              data-toggle="tooltip"
+              data-placement="top"
+              title="Click to view student's details"
+              >{{ student.name }}</span
+            >
+            <span *ngIf="editMode[i]"
+              ><input
+                type="text"
+                [(ngModel)]="student.name"
+                class="form-control"
+                required
+              />
+            </span>
+          </td>
+          <td>
+            <span *ngIf="!editMode[i]">{{ student.city }}</span>
+            <span *ngIf="editMode[i]"
+              ><input
+                type="text"
+                [(ngModel)]="student.city"
+                class="form-control"
+                required
+              />
+            </span>
+          </td>
+          <td>
+            <span *ngIf="!editMode[i]">
+              <img
+                *ngIf="student.gender === 'female'"
+                src="{{ femaleImgUrl }}"
+                alt="Female Avatar"
+              />
+              <img
+                *ngIf="student.gender === 'male'"
+                src="{{ maleImgUrl }}"
+                alt="Male Avatar"
+              />
+            </span>
+            <span *ngIf="editMode[i]">
+              <div class="form-check">
+                <label class="form-check-label mr-5" for="exampleRadios1">
+                  <input
+                    name="gender"
+                    class="form-check-input"
+                    type="radio"
+                    id="female"
+                    value="female"
+                    [(ngModel)]="student.gender"
+                    (change)="setSex($event)"
+                  /><i
+                    class="fas fa-female text-success"
+                    style="font-size: 26px"
+                  ></i
+                  >&nbsp;Female
+                </label>
+                <label class="form-check-label" for="exampleRadios2">
+                  <input
+                    name="gender"
+                    class="form-check-input"
+                    type="radio"
+                    id="male"
+                    value="male"
+                    [(ngModel)]="student.gender"
+                    (change)="setSex($event)"
+                  /><i
+                    class="fas fa-male text-success"
+                    style="font-size: 26px"
+                  ></i
+                  >&nbsp;Male
+                </label>
+              </div>
+            </span>
+          </td>
+          <td>
+            <span *ngIf="!editMode[i]">{{ student.contact }}</span>
+            <span *ngIf="editMode[i]"
+              ><input
+                type="text"
+                [(ngModel)]="student.contact"
+                class="form-control"
+                required
+              />
+            </span>
+          </td>
+          <td>
+            <input type="checkbox" [(ngModel)]="student.isCompleted" />
+          </td>
+          <td>
+            <i
+              *ngIf="!editMode[i]"
+              class="fas fa-pen text-warning mr-4"
+              (click)="editRow(student, i)"
+              style="cursor: pointer"
+            ></i>
+            <i
+              *ngIf="editMode[i]"
+              class="fas fa-save text-info mr-4"
+              (click)="saveRow(student, i)"
+              style="cursor: pointer"
+            ></i>
+            <button
+              *ngIf="searchIsOn === false"
+              class="btn btn-sm btn-danger"
+              (click)="delete(i, student)"
+              [disabled]="!student.isCompleted"
+            >
+              Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-  <div *ngIf="searchIsOn === true && isFound === true">
+  <div *ngIf="searchIsOn === true && isFound === true" class="text-center">
     <button class="btn btn-outline-success" (click)="back()">Go Back</button>
   </div>
 
