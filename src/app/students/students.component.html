@@ -74,7 +74,15 @@
     </div>
   </div>
 
-  <div *ngIf="searching === false && isFound === true" class="table-responsive">
+  <div *ngIf="isEmpty === true" class="text-center py-5">
+    <p class="h4">No Students in this department yet!!!</p>
+    <p class="h4">You can add students.</p>
+  </div>
+
+  <div
+    *ngIf="searching === false && isFound === true && isEmpty === false"
+    class="table-responsive"
+  >
     <table class="table table-striped mt-3 mb-5">
       <thead class="thead-dark">
         <tr>
@@ -195,23 +203,31 @@
           <td>
             <i
               *ngIf="!editMode[i]"
-              class="fas fa-pen text-warning mr-4"
+              class="fas fa-pen text-warning mr-2"
               (click)="editRow(student, i)"
               style="cursor: pointer"
             ></i>
             <i
               *ngIf="editMode[i]"
-              class="fas fa-save text-info mr-4"
+              class="fas fa-save text-info mr-2"
               (click)="saveRow(student, i)"
               style="cursor: pointer"
             ></i>
             <button
               *ngIf="searchIsOn === false"
-              class="btn btn-sm btn-danger"
+              class="btn btn-sm btn-danger mr-2"
               (click)="delete(i, student)"
               [disabled]="!student.isCompleted"
             >
               Delete
+            </button>
+            <button
+              *ngIf="searchIsOn === false"
+              class="btn btn-sm btn-info"
+              (click)="graduate(i, student)"
+              [disabled]="!student.isCompleted"
+            >
+              Graduate
             </button>
           </td>
         </tr>
@@ -287,10 +303,10 @@
                     "
                     class="text-danger"
                   >
-                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                    Accepts Alphabets, space & Min 5 to Max 50 Char
                   </div>
                   <div *ngIf="studentName.errors.pattern" class="text-danger">
-                    Accepts Alphabets, space & Min 5 to Max 30 Char
+                    Accepts Alphabets, space & Min 5 to Max 50 Char
                   </div>
                 </div>
               </div>
@@ -339,7 +355,13 @@
                     "
                     class="text-danger"
                   >
-                    Min 5 to Max 50 Char
+                    Must have 10 digits.
+                  </div>
+                  <div
+                    *ngIf="studentContact.errors.pattern"
+                    class="text-danger"
+                  >
+                    Accepts only numbers.
                   </div>
                 </div>
               </div>

@@ -1,0 +1,135 @@
+<div class="container">
+  <div *ngIf="searching === true">
+    <div class="text-center">
+      <div class="spinner-grow" role="status">
+        <span class="sr-only">Loading...</span>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="searching === false">
+    <div *ngFor="let graduate of graduates" class="card">
+      <div class="text-center">
+        <img
+          *ngIf="graduate.gender === 'female'"
+          src="{{ femaleImgUrl }}"
+          alt="Female Avatar"
+          class="card-img-top"
+        />
+        <img
+          *ngIf="graduate.gender === 'male'"
+          src="{{ maleImgUrl }}"
+          alt="Male Avatar"
+          class="card-img-top"
+        />
+      </div>
+      <div class="card-body py-4">
+        <div class="card-title text-center">
+          <span *ngIf="!editMode" class="h5">{{ graduate.name }}</span>
+          <span *ngIf="editMode"
+            ><input
+              type="text"
+              [(ngModel)]="graduate.name"
+              class="form-control"
+              required
+            />
+          </span>
+        </div>
+        <div class="container text-center">
+          <p class="card-text">
+            Roll:&nbsp;&nbsp;
+            <span *ngIf="!editMode">
+              <strong>{{ graduate.roll }}</strong></span
+            >
+            <span *ngIf="editMode"
+              ><input
+                type="number"
+                [(ngModel)]="graduate.roll"
+                class="form-control"
+                required
+              />
+            </span>
+          </p>
+          <p class="card-text h6">
+            <span *ngIf="!editMode">{{ graduate.city }}</span>
+            <span *ngIf="editMode"
+              ><input
+                type="text"
+                [(ngModel)]="graduate.city"
+                class="form-control"
+                required
+              />
+            </span>
+          </p>
+          <p class="card-text h6">
+            {{ college.name }}
+          </p>
+          <p class="card-text h6">
+            {{ department.name }}
+          </p>
+          <p class="card-text h6">{{ graduate.degree }}</p>
+          <p class="card-text">
+            Year of Passout:&nbsp; <strong>{{ graduate.year }}</strong>
+          </p>
+          <p class="card-text h6">
+            <span *ngIf="!editMode">{{ graduate.contact }}</span>
+            <span *ngIf="editMode"
+              ><input
+                type="text"
+                [(ngModel)]="graduate.contact"
+                class="form-control"
+                required
+              />
+            </span>
+          </p>
+          <div *ngIf="editMode" class="form-check">
+            <label class="form-check-label mr-5" for="exampleRadios1">
+              <input
+                name="gender"
+                class="form-check-input"
+                type="radio"
+                id="female"
+                value="female"
+                [(ngModel)]="graduate.gender"
+                (change)="setSex($event)"
+              /><i
+                class="fas fa-female text-success"
+                style="font-size: 26px"
+              ></i
+              >&nbsp;Female
+            </label>
+            <label class="form-check-label" for="exampleRadios2">
+              <input
+                name="gender"
+                class="form-check-input"
+                type="radio"
+                id="male"
+                value="male"
+                [(ngModel)]="graduate.gender"
+                (change)="setSex($event)"
+              /><i class="fas fa-male text-success" style="font-size: 26px"></i
+              >&nbsp;Male
+            </label>
+          </div>
+        </div>
+      </div>
+      <div class="card-footer">
+        <i
+          *ngIf="!editMode"
+          class="fas fa-pen text-warning float-left"
+          (click)="edit(graduate, i)"
+          style="cursor: pointer; font-size: 30px"
+        ></i>
+        <i
+          *ngIf="editMode"
+          class="fas fa-save text-info float-left"
+          (click)="save(graduate, i)"
+          style="cursor: pointer; font-size: 30px"
+        ></i>
+        <button class="btn btn-primary float-right" (click)="goBack()">
+          Go Back
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

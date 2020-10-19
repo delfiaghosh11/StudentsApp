@@ -18,7 +18,7 @@
         >
           <option value="" selected disabled>Select College</option>
           <option *ngFor="let college of colleges" [ngValue]="college">
-            {{ college.id }}&nbsp;-&nbsp;{{ college.name }}
+            {{ college.name }}
           </option>
         </select>
         <div *ngIf="college?.touched && college?.invalid">

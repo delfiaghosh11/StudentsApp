@@ -66,4 +66,32 @@ export class DataService {
   delete(sid: number) {
     return this.http.get(this.url + 'deleteStudent.php?sid=' + sid);
   }
+
+  getAllGraduates() {
+    return this.http.get(this.url + 'getGraduates.php');
+  }
+
+  createGraduate(resource) {
+    return this.http.post(
+      this.url + 'insertGraduate.php',
+      JSON.stringify(resource)
+    );
+  }
+
+  getGraduatesByDidAndCid(cid: number, did: number) {
+    return this.http.get(
+      this.url + 'getGraduateByDidCid.php?cid=' + cid + '&did=' + did
+    );
+  }
+
+  getGraduateById(gid: number) {
+    return this.http.get(this.url + 'getGraduateById.php?gid=' + gid);
+  }
+
+  updateGraduate(resource) {
+    return this.http.post(
+      this.url + 'updateGraduate.php',
+      JSON.stringify(resource)
+    );
+  }
 }

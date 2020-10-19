@@ -1,3 +1,4 @@
+import { Graduates } from './../graduates';
 import { Departments } from './../departments';
 import { Colleges } from './../colleges';
 import { Students } from './../students';
@@ -30,6 +31,9 @@ export class StudentsComponent implements OnInit {
   searching: boolean;
   college: Departments[];
   cid: number;
+  isEmpty: boolean;
+  graduates: Graduates[];
+  lastGid: number;
 
   constructor(
     private service: DataService,
@@ -44,17 +48,25 @@ export class StudentsComponent implements OnInit {
     this.isFound = true;
     this.searchName = '';
     this.searching = true;
+    this.isEmpty = false;
   }
 
   ngOnInit(): void {
     // this.getData();
     this.getStudents();
     this.getAllStudents();
+    this.getAllGraduates();
   }
 
   getAllStudents() {
     this.service.getAllStudents().subscribe((data) => {
       this.allStudents = data as Students[];
+    });
+  }
+
+  getAllGraduates() {
+    this.service.getAllGraduates().subscribe((data) => {
+      this.graduates = data as Graduates[];
     });
   }
 
@@ -64,6 +76,11 @@ export class StudentsComponent implements OnInit {
 
     this.service.getStudentsByDepartment(this.did).subscribe((data) => {
       this.students = data as Students[];
+      if (this.students.length === 0) {
+        this.isEmpty = true;
+      } else {
+        this.isEmpty = false;
+      }
       // console.log(this.students);
       this.searching = false;
     });
@@ -93,6 +110,7 @@ export class StudentsComponent implements OnInit {
       Validators.required,
       Validators.minLength(10),
       Validators.maxLength(10),
+      Validators.pattern('^[0-9]*$'),
     ]),
     studentDegree: new FormControl('', [
       Validators.required,
@@ -133,7 +151,7 @@ export class StudentsComponent implements OnInit {
     if (this.allStudents.length > 0) {
       this.lastSid = this.allStudents[this.allStudents.length - 1].sid;
     } else {
-      this.lastSid = 1;
+      this.lastSid = 99;
     }
 
     let student = {
@@ -261,5 +279,36 @@ export class StudentsComponent implements OnInit {
 
   goBack() {
     this.location.back();
+  }
+
+  graduate(index, item) {
+    if (this.graduates.length > 0) {
+      this.lastGid = this.graduates[this.graduates.length - 1].gid;
+    } else {
+      this.lastGid = 99;
+    }
+
+    let currentYear = new Date().getFullYear();
+
+    let graduate = {
+      gid: ++this.lastGid,
+      roll: item.roll,
+      name: item.name,
+      city: item.city,
+      contact: item.contact,
+      gender: item.gender,
+      degree: item.degree,
+      year: currentYear,
+      did: this.did,
+      cid: this.cid,
+    };
+
+    this.service.createGraduate(graduate).subscribe(() => {
+      this.getAllGraduates();
+    });
+
+    this.service.delete(item.sid).subscribe(() => {
+      this.getStudents();
+    });
   }
 }

@@ -1,3 +1,4 @@
+import { GraduateDetailsComponent } from './graduate-details/graduate-details.component';
 import { CollegesComponent } from './colleges/colleges.component';
 import { StudentDetailsComponent } from './student-details/student-details.component';
 import { DepartmentsComponent } from './departments/departments.component';
@@ -13,6 +14,12 @@ const routes: Routes = [
   { path: 'departments/:cid', component: DepartmentsComponent },
   { path: 'students/:did', component: StudentsComponent },
   { path: 'details/:sid', component: StudentDetailsComponent },
+  {
+    path: 'graduates',
+    loadChildren: () =>
+      import('./graduates/graduates.module').then((m) => m.GraduatesModule),
+  },
+  { path: 'gradDetails/:gid', component: GraduateDetailsComponent },
 ];
 
 @NgModule({
