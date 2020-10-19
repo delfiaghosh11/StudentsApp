@@ -76,6 +76,9 @@ export class StudentsComponent implements OnInit {
 
     this.service.getStudentsByDepartment(this.did).subscribe((data) => {
       this.students = data as Students[];
+      this.students.sort((a, b) => {
+        return a.roll - b.roll;
+      });
       if (this.students.length === 0) {
         this.isEmpty = true;
       } else {

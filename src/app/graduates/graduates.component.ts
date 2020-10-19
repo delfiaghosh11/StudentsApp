@@ -112,6 +112,9 @@ export class GraduatesComponent implements OnInit {
       .getGraduatesByDidAndCid(this.cid, this.did)
       .subscribe((data) => {
         this.graduates = data as Graduates[];
+        this.graduates.sort((a, b) => {
+          return a.gid - b.gid;
+        });
         if (this.graduates.length > 0) {
           this.isEmpty = false;
           this.visible = true;
