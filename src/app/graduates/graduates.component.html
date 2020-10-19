@@ -67,80 +67,94 @@
     *ngIf="isEmpty === true && graduateSearch === false"
     class="text-center py-5"
   >
-    <p class="h4">None of the students have graduated yet!!!</p>
+    <p class="h4">
+      None of the students of this department has graduated yet!!!
+    </p>
   </div>
 
-  <div *ngIf="isEmpty === false && visible === true">
-    <div class="input-group w-auto float-right">
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Graduate's Name"
-        aria-label="Graduate's Name"
-        aria-describedby="button-addon2"
-        [(ngModel)]="searchName"
-        (keyup.enter)="search()"
-      />
-      <div class="input-group-append">
-        <button
-          class="btn btn-outline-secondary"
-          type="button"
-          id="button-addon2"
-          (click)="search()"
-        >
-          Search
-        </button>
-      </div>
-    </div>
-  </div>
-
-  <div *ngIf="isFound === false" class="text-center mt-5">
-    <div class="my-2">
-      <i
-        class="fas fa-exclamation-triangle text-warning"
-        style="font-size: 60px"
-      ></i>
-    </div>
-    <div class="h5 my-2">
-      <p>No Match Found</p>
-    </div>
-    <div>
-      <button class="btn btn-outline-success" (click)="back()">Go Back</button>
-    </div>
-  </div>
-
-  <div *ngIf="isEmpty === false && visible === true && isFound === true">
-    <div class="my-5 p-3 bg-white rounded shadow-sm">
-      <h6 class="border-bottom border-gray pb-2 mb-0">Graduates</h6>
-
-      <div *ngIf="graduateSearch === true">
-        <div class="text-center">
-          <div class="spinner-border" role="status">
-            <span class="sr-only">Loading...</span>
+  <div>
+    <div class="row">
+      <div class="col mt-5">
+        <div *ngIf="isEmpty === false && visible === true">
+          <div class="input-group w-auto float-right">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Graduate's Name"
+              aria-label="Graduate's Name"
+              aria-describedby="button-addon2"
+              [(ngModel)]="searchName"
+              (keyup.enter)="search()"
+            />
+            <div class="input-group-append">
+              <button
+                class="btn btn-outline-secondary"
+                type="button"
+                id="button-addon2"
+                (click)="search()"
+              >
+                Search
+              </button>
+            </div>
           </div>
         </div>
       </div>
-
-      <a
-        *ngFor="let graduate of graduates"
-        routerLink="/gradDetails/{{ graduate.gid }}"
-      >
-        <div class="media text-muted pt-3">
-          <div *ngIf="graduate.gender === 'female'">
-            <img src="{{ femaleImgUrl }}" alt="Female Avatar" />
+    </div>
+    <div class="row">
+      <div class="col">
+        <div *ngIf="isFound === false" class="text-center mt-5">
+          <div class="my-2">
+            <i
+              class="fas fa-exclamation-triangle text-warning"
+              style="font-size: 60px"
+            ></i>
           </div>
-          <div *ngIf="graduate.gender === 'male'">
-            <img src="{{ maleImgUrl }}" alt="Male Avatar" />
+          <div class="h5 my-2">
+            <p>No Match Found</p>
           </div>
-          <p class="media-body pb-3 mb-0 lh-125 border-bottom border-gray">
-            <strong>{{ graduate.name }}</strong>
-          </p>
+          <div>
+            <button class="btn btn-outline-success" (click)="back()">
+              Go Back
+            </button>
+          </div>
         </div>
-      </a>
+        <div *ngIf="isEmpty === false && visible === true && isFound === true">
+          <div class="my-5 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Graduates</h6>
 
-      <small class="d-block text-right mt-3">
-        <a (click)="goBack()">Back</a>
-      </small>
+            <div *ngIf="graduateSearch === true">
+              <div class="text-center">
+                <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+                </div>
+              </div>
+            </div>
+
+            <a
+              *ngFor="let graduate of graduates"
+              routerLink="/gradDetails/{{ graduate.gid }}"
+            >
+              <div class="media text-muted pt-3">
+                <div *ngIf="graduate.gender === 'female'">
+                  <img src="{{ femaleImgUrl }}" alt="Female Avatar" />
+                </div>
+                <div *ngIf="graduate.gender === 'male'">
+                  <img src="{{ maleImgUrl }}" alt="Male Avatar" />
+                </div>
+                <p
+                  class="media-body pb-3 mb-0 lh-125 border-bottom border-gray"
+                >
+                  <strong>{{ graduate.name }}</strong>
+                </p>
+              </div>
+            </a>
+
+            <small class="d-block text-right mt-3">
+              <a (click)="goBack()">Back</a>
+            </small>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

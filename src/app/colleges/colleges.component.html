@@ -27,17 +27,22 @@
           </div>
         </div>
       </div>
-      <button type="submit" class="btn btn-primary" [disabled]="form.invalid">
+      <button
+        *ngIf="visible === false"
+        type="submit"
+        class="btn btn-primary"
+        [disabled]="form.invalid"
+      >
         Done
       </button>
+      <div *ngIf="visible === true">
+        <a
+          class="btn btn-secondary"
+          type="button"
+          routerLink="/departments/{{ cid }}"
+          >Next</a
+        >
+      </div>
     </form>
-    <div *ngIf="visible === true">
-      <a
-        class="btn btn-secondary float-right"
-        type="button"
-        routerLink="/departments/{{ cid }}"
-        >Next</a
-      >
-    </div>
   </div>
 </div>
